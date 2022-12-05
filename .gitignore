@@ -1,0 +1,5 @@
+inputs/*
+.vscode
+session.cookies
+__pycache__
+test.py
