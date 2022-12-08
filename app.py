@@ -1,8 +1,15 @@
 from src.utils.api import get_input
 from src.utils.new_file import new_file
+import argparse
 
-YEAR = 2022
-DAY = 4
+parser = argparse.ArgumentParser(description='Init puzzle file')
+parser.add_argument('year', type=int, help='the event year')
+parser.add_argument('day' ,type=int,help='the day')
 
-new_file(YEAR,DAY)
-get_input(YEAR,DAY)
+args = parser.parse_args()
+
+#YEAR = 2022
+#DAY = 6
+
+new_file(args.year,args.day)
+get_input(args.year,args.day)
