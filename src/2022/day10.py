@@ -18,7 +18,7 @@ def draw_pixel(crt,col,row,index):
 
 
 crt_size = (40,6)
-crt = [["." for x in range(crt_size[0])]for y in range(crt_size[1])]
+crt = [[" " for x in range(crt_size[0])]for y in range(crt_size[1])]
 
 x = 1
 cycles =[]
