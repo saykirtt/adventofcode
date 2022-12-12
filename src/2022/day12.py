@@ -1,50 +1,79 @@
+
 filename = 'inputs/2022/day12'
-filename = 'inputs/test'
+#filename = 'inputs/test'
 
 with open(filename,'r') as file:
 	data = file.read()
 
 lines = data.splitlines()
-grid = list(map(list, zip(*lines)))
-
+grid = [list(x) for x in lines]
 # get S end E position
+
+
 for x,col in enumerate(grid):
 	for y,value in enumerate(col):
 		if value == 'E':
 			end = (x,y)
-			grid[x,y] = 'z'
+			grid[x][y] = 'z'
 		elif value == 'S':
-			start = (0,x,y)
-			grid[x,y] = 'a'
+			start = (x,y)
+			grid[x][y] = 'a'
 
+#part 1
+start_dist = (0,start[0],start[1])
 
-def print_2d(m):
-	print('\n'.join([''.join([f'{i}'for i in row]) for row in m]))
+edge = [start_dist]
+vu =[start]
+end_ok = False
+while edge:
+	d,x,y = edge.pop(0)
 
+	value = grid[x][y]
+	for cx,cy in {(x+1,y),(x-1,y),(x,y+1),(x,y-1)}:
+		if cx < 0 or cy < 0 or cx >= len(grid) or cy >= len(grid[0]):
+			continue
+		if (cx,cy) in vu:
+			continue
+		current_value = grid[cx][cy]
+		diff = ord(current_value) - ord(value)
+		if diff > 1:
+			continue
 
+		if (cx,cy) == end:
+			print(start,d+1)
+			end_ok = True
+			break
+		vu.append((cx,cy))
+		edge.append((d+1,cx,cy))
 
-# from S go to E
+	if end_ok:
+		break
 
+#part 2
+start_dist = (0,end[0],end[1])
+edge = [start_dist]
+vu =[end]
+end_ok = False
+while edge:
+	d,x,y = edge.pop(0)
 
-# list avec tout les points attegnable (distance,x,y)
-# on pop le point puis on ajoute tout les points atteignable depuis ce point current_distance,x,y
+	value = grid[x][y]
+	for cx,cy in {(x+1,y),(x-1,y),(x,y+1),(x,y-1)}:
+		if cx < 0 or cy < 0 or cx >= len(grid) or cy >= len(grid[0]):
+			continue
+		if (cx,cy) in vu:
+			continue
+		current_value = grid[cx][cy]
+		diff = ord(value) - ord(current_value)
+		if diff > 1:
+			continue
 
-# while (x,y) != end 
+		if current_value == 'a':
+			print(d+1)
+			end_ok = True
+			break
+		vu.append((cx,cy))
+		edge.append((d+1,cx,cy))
 
-edge = [start]
-
-while edge[-1] != end:
-	d,x,y = edge.pop()
-
-	for cx,cy in {(x,y-1),(x,y+1),(x+1,y),(x-1,y)}:
-			if cx < 0 or cy < 0 or cx > len(grid) or cy > len(col):
-				continue
-			else:
-				edge.append(d+1,cx,cy)
-
-
-	# ord(a) == ord(b) or ord(a)+1 == ord(b) 
-
-
-print(start)
-print(end)
+	if end_ok:
+		break
